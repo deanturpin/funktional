@@ -29,5 +29,13 @@ int main() {
   assert(f.size() == 3);
   assert(g.size() == 1);
   assert(h.size() == 1);
+  assert(h.back() > 4.0);
   assert(i.size() == 2);
+  assert(i.front() > 3.0);
+
+  const auto a_sum = std::accumulate(a.cbegin(), a.cend(), 0.0);
+
+  assert(a_sum < std::accumulate(b.cbegin(), c.cend(), 1.0));
+  assert(a_sum < std::accumulate(c.cbegin(), c.cend(), 1.0));
+  assert(std::accumulate(i.cbegin(), i.cend(), 0.0) > 7.0);
 }
