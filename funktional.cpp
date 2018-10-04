@@ -1,11 +1,7 @@
 #include "parallel.h"
 #include "vektor.h"
 
-#include <algorithm>
 #include <cassert>
-#include <cmath>
-#include <iostream>
-#include <iterator>
 #include <numeric>
 #include <vector>
 
