@@ -41,6 +41,8 @@ template <typename T = double> struct vektor : public std::vector<T> {
   }
 };
 
+static_assert(std::is_standard_layout<vektor<double>>::value);
+
 } // namespace vek
 
 #endif
