@@ -1,6 +1,7 @@
 #ifndef VEKTOR_H
 #define VEKTOR_H
 
+#include <type_traits>
 #include <vector>
 
 namespace vek {
