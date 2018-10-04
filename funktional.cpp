@@ -1,31 +1,69 @@
-#include "vektor.h"
+// #include "vektor.h"
 #include "parallel.h"
 
 #include <algorithm>
 #include <cassert>
+#include <cmath>
 #include <iostream>
 #include <iterator>
 #include <numeric>
 #include <vector>
 
+namespace vek {
+
+// VEKTOR - a concatenating vector
+template <typename T = double> struct vektor : public std::vector<T> {
+
+  // A constructor with a value pushes the value onto the empty vector
+  vektor(const T &a) { this->push_back(a); }
+
+  // Copy from a std::vector
+  // vektor(const std::vector<T>&a) {
+
+  //         this->clear();
+  //         this->reserve(a.size());
+  //         for (const auto &b : a)
+  //         this->push_back(b);
+  // }
+
+  // Ensure the default constuctor is valid
+  vektor() = default;
+
+  // Declare the concatenation operator overloads
+  friend vektor operator+(vektor<T> &a, const T &b) {
+    a.reserve(a.size() + 1);
+    return a.push_back(b);
+  }
+
+  friend vektor operator+(vektor<T> &a, const vektor<T> &b) {
+    a.reserve(a.size() + b.size());
+    for (const auto &c : b)
+      a.emplace_back(c);
+    return a;
+  }
+
+  friend vektor operator+(vektor<T> &&a, const vektor<T> &b) {
+    for (const auto &c : b)
+      a.push_back(c);
+    return a;
+  }
+};
+
+} // namespace vek
+
 int main() {
 
-  // Create some test data
-  std::vector<double> a(1e4 + 13);
-  std::iota(a.begin(), a.end(), 1.1);
+  std::vector<double> a = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-  // Create copies to work with
-  auto b = a;
-  auto c = a;
+  const auto b(a);
+  const auto c = b;
+  const auto d = vek::vektor(.1) + 1.1;
+  const auto e = vek::vektor(.1) + 2.0 + vek::vektor(101.0) + 1.1;
+  const auto f = 2.0 + vek::vektor(101.0) + 1.1;
 
-  // The worker routine
-  const auto do_things = [](auto &i) { i = std::sqrt(i + 1.0 / 1000000); };
-
-  // Serial application
-  std::for_each(b.begin(), b.end(), do_things);
-
-  // Parallel application
-  parallel::for_each(c.begin(), c.end(), do_things);
-
-  assert(b == c);
+  assert(b.size() == 10);
+  assert(c.size() == 10);
+  assert(d.size() == 2);
+  assert(e.size() == 4);
+  assert(f.size() == 3);
 }

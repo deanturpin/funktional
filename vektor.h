@@ -3,6 +3,8 @@
 
 #include <vector>
 
+namespace vek {
+
 // VEKTOR - a concatenating vector
 template <typename T> struct vektor : public std::vector<T> {
 
@@ -31,5 +33,7 @@ template <typename T> struct vektor : public std::vector<T> {
     return a;
   }
 };
+
+} // namespace vek
 
 #endif
