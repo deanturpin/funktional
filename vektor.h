@@ -6,10 +6,17 @@
 namespace vek {
 
 // VEKTOR - a concatenating vector
-template <typename T> struct vektor : public std::vector<T> {
+template <typename T = double> struct vektor : public std::vector<T> {
 
   // A constructor with a value pushes the value onto the empty vector
-  explicit vektor(const T &a) { this->push_back(a); }
+  vektor(const T &a) { this->push_back(a); }
+
+  // Construct with a std::vector
+  vektor(const std::vector<T> &a) {
+    this->reserve(a.size());
+    for (const auto &x : a)
+      this->push_back(x);
+  }
 
   // Ensure the default constuctor is valid
   vektor() = default;
