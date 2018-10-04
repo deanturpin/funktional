@@ -17,15 +17,6 @@ template <typename T = double> struct vektor : public std::vector<T> {
   // A constructor with a value pushes the value onto the empty vector
   vektor(const T &a) { this->push_back(a); }
 
-  // Copy from a std::vector
-  // vektor(const std::vector<T>&a) {
-
-  //         this->clear();
-  //         this->reserve(a.size());
-  //         for (const auto &b : a)
-  //         this->push_back(b);
-  // }
-
   // Ensure the default constuctor is valid
   vektor() = default;
 
@@ -53,7 +44,7 @@ template <typename T = double> struct vektor : public std::vector<T> {
 
 int main() {
 
-  std::vector<double> a = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+  const std::vector<double> a = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
   const auto b(a);
   const auto c = b;
