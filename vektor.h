@@ -48,18 +48,22 @@ template <typename T = double> struct vektor : public std::vector<T> {
   }
 };
 
-using _vek = vektor<double>;
-static_assert(std::is_standard_layout<_vek>::value);
+// IOTA
+template <typename T = double> vek::vektor<T> iota(const int n) {
+  return n <= 0 ? vek::vektor<T>() : iota(n - 1) + n;
+}
 
-static_assert(std::is_constructible<_vek>::value);
-static_assert(std::is_default_constructible<_vek>::value);
-static_assert(std::is_copy_constructible<_vek>::value);
-static_assert(std::is_move_constructible<_vek>::value);
-static_assert(std::is_assignable<_vek, std::vector<double>>::value);
-static_assert(std::is_assignable<std::vector<double>, _vek>::value);
-static_assert(std::is_move_assignable<_vek>::value);
-static_assert(std::is_destructible<_vek>::value);
-static_assert(!std::has_virtual_destructor<_vek>::value);
+// Assertive
+static_assert(std::is_standard_layout<vektor<double>>::value);
+static_assert(std::is_constructible<vektor<double>>::value);
+static_assert(std::is_default_constructible<vektor<double>>::value);
+static_assert(std::is_copy_constructible<vektor<double>>::value);
+static_assert(std::is_move_constructible<vektor<double>>::value);
+static_assert(std::is_assignable<vektor<double>, std::vector<double>>::value);
+static_assert(std::is_assignable<std::vector<double>, vektor<double>>::value);
+static_assert(std::is_move_assignable<vektor<double>>::value);
+static_assert(std::is_destructible<vektor<double>>::value);
+static_assert(!std::has_virtual_destructor<vektor<double>>::value);
 
 } // namespace vek
 
