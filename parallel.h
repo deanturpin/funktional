@@ -3,10 +3,10 @@
 
 #include <algorithm>
 #include <cmath>
-#include <thread>
-#include <vector>
 #include <functional>
 #include <iostream>
+#include <thread>
+#include <vector>
 
 namespace parallel {
 
@@ -19,32 +19,28 @@ void for_each(Iterator begin, Iterator end, Functor func) {
   const unsigned long calculations_per_thread =
       std::ceil(1.0 * calculations / thread_count);
 
-  struct worker_t{
-	  Iterator a{};
-	  Iterator b{};
+  struct worker_t {
+    Iterator a{};
+    Iterator b{};
   };
 
   std::vector<worker_t> workers;
 
   const std::function<void(Iterator, Iterator, int)> populate =
-	  [&workers, &begin, &end, &calculations_per_thread, &populate]
-		  (const Iterator a, const Iterator b, const int n){
+      [&workers, &begin, &end, &calculations_per_thread,
+       &populate](const Iterator a, const Iterator b, const int n) {
+        if (n == 0)
+          return;
 
-		  if (n == 0)
-			  return;
+        workers.push_back({a, b});
 
-	  workers.push_back({a, b});
+        populate(a, b, n - 1);
+      };
 
-	  populate(a, b, n - 1);
-  };
+  populate(begin, std::min(std::next(begin, calculations_per_thread), end),
+           thread_count);
 
-
-    populate(
-    begin,
-    std::min(std::next(begin, calculations_per_thread), end),
-		    thread_count);
-
-    std::cout << workers.size() << " workers\n";
+  std::cout << workers.size() << " workers\n";
 
   // Partition data for each thread
   std::vector<std::thread> threads;
